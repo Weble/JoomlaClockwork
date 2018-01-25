@@ -6,7 +6,6 @@ use Clockwork\DataSource\DataSource;
 use Clockwork\Request\Log;
 use Clockwork\Request\Request;
 use Clockwork\Request\Timeline;
-use Joomla\CMS\Log\LogEntry;
 
 /**
  * Data source for Eloquent (Laravel ORM), provides database queries
