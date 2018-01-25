@@ -9,6 +9,11 @@ defined('_JEXEC') or die;
 class PlgSystemClockwork extends JPlugin
 {
     /**
+     * @var Clockwork\Clockwork
+     */
+    protected $clockwork;
+
+    /**
      * Constructor.
      *
      * @param   object &$subject The object to observe.
@@ -20,13 +25,26 @@ class PlgSystemClockwork extends JPlugin
     {
         parent::__construct($subject, $config);
 
+        // JDebug needs to be enabled to log queries
+        if (!JDEBUG) {
+            return;
+        }
 
+        // User has to be authorised to see the debug information.
+        if (!$this->isAuthorisedDisplayDebug()) {
+            return;
+        }
+
+        $this->setupClockWork();
     }
 
-    public function onAfterInitialise()
+    /**
+     *
+     */
+    public function onAfterInitialise ()
     {
         if (\JRequest::getVar('clockwork', false) == 'getClockworkDetails') {
-            require_once __DIR__ .'/vendor/autoload.php';
+            require_once __DIR__ . '/vendor/autoload.php';
 
             $clockwork = new Clockwork\Clockwork;
             $clockwork->setStorage(new Clockwork\Storage\SqlStorage('sqlite:' . JPATH_SITE . '/cache/clockwork.sqlite'));
@@ -56,48 +74,35 @@ class PlgSystemClockwork extends JPlugin
             return;
         }
 
-        $this->setupClockWork();
+        $this->resolveClockworkRequest();
     }
 
-    protected function setupClockWork()
+    /**
+     *
+     */
+    protected function setupClockWork ()
     {
-        require_once __DIR__ .'/vendor/autoload.php';
+        require_once __DIR__ . '/vendor/autoload.php';
 
         $clockwork = new Clockwork\Clockwork;
-        $dataSource = new \Weble\JoomlaClockwork\JoomlaDbDataSource();
-
-        $db = \JFactory::getDbo();
-        $log = $db->getLog();
-
-        if ($log) {
-            $timings = $db->getTimings();
-            $callStacks = $db->getCallStacks();
-
-            foreach ($log as $id => $query) {
-                $queryTime = 0;
-                $callStack = [];
-
-                if ($timings && isset($timings[$id * 2 + 1])) {
-                    // Compute the query time.
-                    $queryTime = ($timings[$id * 2 + 1] - $timings[$id * 2]) * 1000;
-                }
-
-                if ($callStacks[$id]) {
-                    $callStack = $callStacks[$id];
-                }
-
-                $dataSource->registerQuery($query, $queryTime, $callStack);
-            }
-        }
 
         $clockwork->addDataSource(new Clockwork\DataSource\PhpDataSource);
-        $clockwork->addDataSource($dataSource);
+        $clockwork->addDataSource(new \Weble\JoomlaClockwork\JoomlaDbDataSource());
 
+        $this->clockwork = $clockwork;
+    }
+
+    /**
+     *
+     */
+    protected function resolveClockworkRequest()
+    {
         $storage = new Clockwork\Storage\SqlStorage('sqlite:' . JPATH_SITE . '/cache/clockwork.sqlite');
-        $clockwork->setStorage($storage);
-        $clockwork->resolveRequest()->storeRequest();
 
-        header('X-Clockwork-Id: ' . $clockwork->getRequest()->id);
+        $this->clockwork->setStorage($storage);
+        $this->clockwork->resolveRequest()->storeRequest();
+
+        header('X-Clockwork-Id: ' . $this->clockwork->getRequest()->id);
         header('X-Clockwork-Version: ' . Clockwork\Clockwork::VERSION);
 
         header('X-Clockwork-Path:' . '/index.php?clockwork=getClockworkDetails&id=');
