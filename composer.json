@@ -1,0 +1,17 @@
+{
+    "name": "weble/joomlaclockwork",
+    "authors": [
+        {
+            "name": "Daniele Rosario",
+            "email": "daniele@weble.it"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Weble\\JoomlaClockwork\\": "src/"
+        }
+    },
+    "require": {
+        "itsgoingd/clockwork": "^2.0"
+    }
+}
