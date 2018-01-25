@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.1" type="plugin" group="system" method="upgrade">
+<extension version="1.0.0" type="plugin" group="system" method="upgrade">
 	<name>Joomla Clockwork</name>
-	<author>Weble</author>
-	<creationDate>December 2006</creationDate>
-	<copyright>Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
-	<version>3.0.0</version>
-	<description>PLG_DEBUG_XML_DESCRIPTION</description>
+	<author>Weble Srl</author>
+	<creationDate>January 2018</creationDate>
+	<copyright>Copyright (C) 2018 Weble Srl. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE</license>
+	<authorEmail>daniele@weble.it</authorEmail>
+	<authorUrl>www.weble.it</authorUrl>
+	<version>1.0.1</version>
+	<description>PLG_CLOCKWORK_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="clockwork">clockwork.php</filename>
+		<filename>LICENSE</filename>
 		<folder>src</folder>
 		<folder>vendor</folder>
 	</files>
-	<languages>
+	<languages folder="language">
 		<language tag="en-GB">en-GB.plg_system_clockwork.ini</language>
 		<language tag="en-GB">en-GB.plg_system_clockwork.sys.ini</language>
 	</languages>
@@ -24,8 +25,8 @@
 				<field
 					name="filter_groups"
 					type="usergrouplist"
-					label="PLG_DEBUG_FIELD_ALLOWED_GROUPS_LABEL"
-					description="PLG_DEBUG_FIELD_ALLOWED_GROUPS_DESC"
+					label="PLG_CLOCKWORK_FIELD_ALLOWED_GROUPS_LABEL"
+					description="PLG_CLOCKWORK_FIELD_ALLOWED_GROUPS_DESC"
 					multiple="true"
 					size="10"
 				/>
