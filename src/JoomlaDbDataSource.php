@@ -137,7 +137,7 @@ class JoomlaDbDataSource extends DataSource
     {
         $databaseExecuteIndex = false;
         foreach ($callStack as $index => $call) {
-            if (stripos($call['file'], 'libraries/joomla/database/driver.php') !== false) {
+            if (isset($call['file']) && stripos($call['file'], 'libraries/joomla/database/driver.php') !== false) {
                 $databaseExecuteIndex = $index + 1;
             }
         }
