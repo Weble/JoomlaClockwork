@@ -12,6 +12,6 @@
         }
     },
     "require": {
-        "itsgoingd/clockwork": "^2.0"
+        "itsgoingd/clockwork": "^4.0"
     }
 }
