@@ -7,9 +7,6 @@ use Clockwork\Request\Log;
 use Clockwork\Request\Request;
 use Clockwork\Request\Timeline;
 
-/**
- * Data source for Eloquent (Laravel ORM), provides database queries
- */
 class JoomlaDbDataSource extends DataSource
 {
     /**
@@ -145,6 +142,7 @@ class JoomlaDbDataSource extends DataSource
         $this->queries[] = [
             'query' => (string)$query,
             'time' => $time,
+            'trace' => $callStack,
             'file' => $databaseExecuteIndex ? $callStack[$databaseExecuteIndex]['file'] : '',
             'line' => $databaseExecuteIndex ? $callStack[$databaseExecuteIndex]['line'] : '',
             'model' => $databaseExecuteIndex ? $callStack[$databaseExecuteIndex]['class'] : ''
@@ -186,6 +184,7 @@ class JoomlaDbDataSource extends DataSource
                 'query' => $query['query'],
                 'duration' => $query['time'],
                 'connection' => 'joomla',
+                'trace' => $query['trace'],
                 'file' => $query['file'],
                 'line' => $query['line'],
                 'model' => $query['model']
